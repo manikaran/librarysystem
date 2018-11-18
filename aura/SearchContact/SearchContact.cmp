@@ -1,0 +1,20 @@
+<aura:component controller="SearchContactController" access="global" implements="force:appHostable">
+	
+    <aura:attribute name="name" type="string" access="PRIVATE">
+    </aura:attribute>
+    
+    <aura:attribute name="contactID" type="string">
+    </aura:attribute>
+    
+    <aura:attribute name="error" type="string">
+    </aura:attribute>
+    
+    <lightning:input aura:id="txtname" name="txtName" label="Enter Employee name" required="true" value="{!v.name}">
+    </lightning:input>
+    
+    <lightning:button name="btnCheck" label="Check" onclick="{!c.onBtnClick}">
+    </lightning:button>
+    
+    <lightning:textarea label ='Check Contact Result' name="txterror" value="{!v.error}">
+    </lightning:textarea>
+</aura:component>

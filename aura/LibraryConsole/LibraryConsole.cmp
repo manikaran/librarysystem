@@ -1,0 +1,31 @@
+<aura:component controller="LibraryConsoleController" access="global" implements="force:appHostable">
+
+    <aura:attribute name="selectedAction" type="string" access="PRIVATE">
+    </aura:attribute>
+    
+    <aura:attribute name="barcode" type="string" access="PRIVATE">
+    </aura:attribute>
+     <aura:attribute name="SubmitMessage" type="string" access="PRIVATE">
+    </aura:attribute>
+    
+    
+    <aura:attribute name="contId" type="String" access="PRIVATE"/>
+    
+    <lightning:select name="userAction" label="What do you want todo?" required="true" value="{!v.selectedAction}">
+        <option value=''>Select one</option>
+        <option value="Check IN">Check IN</option>
+        <option value="Check OUT">Check OUT</option>
+    </lightning:select>
+    
+    <lightning:input name="txtbarcode" label="Enter Barcode" required="true" value="{!v.barcode}">
+    </lightning:input>
+    
+    <c:SearchContact contactID="{!v.contId}"/>
+    
+    <lightning:button name="btnSubmit" label="Submit" onclick="{!c.handleSubmit}">
+    </lightning:button>
+    
+     <lightning:textarea label ='Submit Result' name="txtMsg" value="{!v.SubmitMessage}">
+    </lightning:textarea>
+    
+</aura:component>
