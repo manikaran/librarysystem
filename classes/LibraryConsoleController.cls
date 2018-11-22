@@ -11,29 +11,23 @@ public with sharing class LibraryConsoleController {
             return REQUIRED_MISSING;
         }
         
-      	system.debug('+++selectedAction +++' + selectedAction);
         
 		Library_Items__c libItem = getLibraryItemIdFromBarCode(barcode);
 		String libItemId = libItem.Id;
         
-        system.debug('+++libItem.Id++++' + libItem.Id);
-        
+        //TODO:CHECKIN
         if(selectedAction == 'Check IN')
         {
-            system.debug('Check IN');
-         	
             if(libItem.Status__c == 'Checked IN')
                 return 'ITEM ALREADY CHECKED IN';
             
             Employee_Item_Junction__c junctRec = getLastestCheckedoutInfo(contactId,barcode, libItemId);
             
-            
             if(junctRec != null && junctRec.Item_Status__c == CHECK_OUT)
             {
-            	system.debug('+++ Action konsa hai +++' + selectedAction);
-            	
                 junctRec.Item_Status__c = CHECK_IN;
                 junctRec.Check_IN_Datetime__c = Datetime.now();
+                junctRec.Overdue_Datetime__c = null;
                 update junctRec;
                 
                 //libItem.Status__c = 'Checked IN';
@@ -43,27 +37,20 @@ public with sharing class LibraryConsoleController {
             }
             else
                	return 'ITEM NOT CHECKED OUT BY THIS CONTACT';
-           
-        }
-        else
-        {
+        } else {
+           //TODO:CHECKOUT
             
-            system.debug('CHECK OUT');
-            system.debug('----libItem.Status__c----' + libItem.Status__c );
             if(libItem.Status__c == 'Checked OUT')
                 return 'ITEM ALREADY CHECKED OUT';
             
             //check borrow limit
             List<Employee_Item_Junction__c> junctionRecs = getJunctionRecords(contactId,barcode, libItemId);
-                //system.debug('BORROW LIST SIZE'+BorrowItemLimits.size());
             
             double borrowLimit;
             
             if(junctionRecs != null && !junctionRecs.isEmpty()){
             	borrowLimit = junctionRecs[0].Library_Item_FK__r.BorrowLimit__c;
             	
-                system.debug('BORROWLIMIT '+borrowLimit);
-                //system.debug('BORROWLIMIT STATUS '+junctionRecs[0].Item_Status__c);
                 
             	if(junctionRecs[0].Item_Status__c == CHECK_OUT){
 				    return 'ALREADY CHECKED OUT';
@@ -79,7 +66,6 @@ public with sharing class LibraryConsoleController {
             	}
             }else{
                 
-                system.debug('Create New Junction Record');
 				createNewJunction(contactId,barCode);
 				
 				//libItem.Status__c = 'Checked OUT';
@@ -108,6 +94,10 @@ public with sharing class LibraryConsoleController {
         
         Library_Items__c libItem = getLibraryItemIdFromBarCode(barcode);
         junctRec.Library_Item_FK__c = libItem.Id;
+        
+        Integer OverdueLimit = libItem.OverdueLimit__c.intValue();
+        
+        junctRec.Overdue_Datetime__c = Datetime.now().addHours(OverdueLimit);
         insert junctRec;
     }
     
@@ -125,7 +115,6 @@ public with sharing class LibraryConsoleController {
         
         if(!junctionRecs.isEmpty() && junctionRecs != null )
         {
-            system.debug('++++++JUNCTION_RECS_RETURNED++++' + junctionRecs[0]);
         	return junctionRecs[0];
         }
       
@@ -135,7 +124,10 @@ public with sharing class LibraryConsoleController {
     
     private static Library_Items__c getLibraryItemIdFromBarCode(String barCode)
     {
-        List<Library_Items__c> libItems = [Select Id , Item_Code__c, Status__c From Library_Items__c Where Item_Code__c =: barcode LIMIT 1];
+        List<Library_Items__c> libItems = [Select Id , Item_Code__c, Status__c, OverdueLimit__c
+                                           From Library_Items__c
+                                           Where Item_Code__c =: barcode 
+                                           LIMIT 1];
         if(!libItems.isEmpty() || libItems != null)
      		return libItems[0];
        	return null;
@@ -152,11 +144,9 @@ public with sharing class LibraryConsoleController {
                        	ORDER BY CreatedDate DESC
                        ];
         
-            system.debug('++++++the one I just created++++' + junctionRecs);
             
         if(junctionRecs != null && !junctionRecs.isEmpty())
         {
-            system.debug('++++++BORROW_LIMIT_RECS_RETURNED++++' + junctionRecs[0]);
         	return junctionRecs;
         }
       

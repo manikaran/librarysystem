@@ -5,9 +5,9 @@
     
     <aura:attribute name="barcode" type="string" access="PRIVATE">
     </aura:attribute>
+    
      <aura:attribute name="SubmitMessage" type="string" access="PRIVATE">
     </aura:attribute>
-    
     
     <aura:attribute name="contId" type="String" access="PRIVATE"/>
     

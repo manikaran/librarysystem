@@ -34,7 +34,6 @@ private class LibraryConsoleController_Test {
     	
     	
     	//Check Out First Time Scenario
-    	system.debug('---contact name---' + c.Name);
     	String contactId = SearchContactController.getContactByName(c.Name);
     	system.assertEquals(contactId,c.Id);
     	
@@ -44,7 +43,6 @@ private class LibraryConsoleController_Test {
     	//Check Out Same Employee Scenario
     	String subMessage = LibraryConsoleController.submit(c.Id,l.Item_Code__c,'Check OUT');
     	system.assertEquals(subMessage,'ITEM ALREADY CHECKED OUT');
-    	
     }
     
     private static Contact createEmployee(){
