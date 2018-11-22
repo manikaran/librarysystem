@@ -30,6 +30,10 @@
                 <behavior>Edit</behavior>
                 <field>Check_Out_Datetime__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Overdue_Datetime__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns/>
         <style>TwoColumnsTopToBottom</style>

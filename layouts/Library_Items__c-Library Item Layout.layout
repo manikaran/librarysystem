@@ -28,6 +28,10 @@
                 <field>BorrowLimit__c</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Edit</behavior>
+                <field>OverdueLimit__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Number_of_times_Borrow__c</field>
             </layoutItems>

@@ -1,12 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
-    <types>
-        <members>EmployeeItemJunctionTriggerHandler</members>
-        <members>LibraryConsoleController</members>
-        <members>LibraryConsoleController_Test</members>
-        <members>SearchContactController</members>
-        <name>ApexClass</name>
-    </types>
     <types>
         <members>*</members>
         <name>ApexComponent</name>
@@ -51,6 +44,14 @@
         <members>unfiled$public</members>
         <members>unfiled$public/Library_Items_Report</members>
         <name>Report</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>CustomLabels</name>
     </types>
     <version>38.0</version>
 </Package>

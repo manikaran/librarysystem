@@ -1,5 +1,5 @@
 global class OverdueReminder implements Schedulable {
-	
+	//TODO: create a batch job for better implemenation as it will run into problems with gov limits
 	global void execute(SchedulableContext ctx){
 		DateTime currentTime = Datetime.now();
 		List<Employee_Item_Junction__c> OverdueRecs = new List<Employee_Item_Junction__c>();
@@ -10,7 +10,7 @@ global class OverdueReminder implements Schedulable {
 			   	        AND Overdue_Datetime__c <=: currentTime 
 					  ];
 					  
-        List<Contact> conDetails = new List<Contact>(); 
+        List<Contact> conDetails = new List<Contact>();
         
         for (Integer i = 0; i < OverdueRecs.size(); i++) {
         	contact con = new Contact();
@@ -24,7 +24,7 @@ global class OverdueReminder implements Schedulable {
 	    	}	    
         }
 	}
-	
+	//Sends Email
 	public void sendReminderEmail(Contact con){
 		Messaging.SingleEmailMessage message = new Messaging.SingleEmailMessage();
 		message.toAddresses = new String[] { con.Email, con.Email };
